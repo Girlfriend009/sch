@@ -117,7 +117,7 @@
 
         .class-item {
             display: grid;
-            grid-template-columns: 30px 120px 1fr 120px 150px;
+            grid-template-columns: 30px 1fr;
             gap: 1rem;
             padding: 1rem;
             border-radius: 15px;
@@ -196,98 +196,106 @@
             font-style: italic;
         }
 
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
             .class-item {
-                grid-template-columns: 30px 1fr;
-                gap: 0.5rem;
+                grid-template-columns: 30px 120px 1fr 120px 150px;
+                gap: 1rem;
             }
 
-            .time, .room, .lecturer {
+            .time {
                 grid-column: 2;
+            }
+
+            .room {
+                grid-column: 4;
+            }
+
+            .lecturer {
+                grid-column: 5;
             }
         }
     </style>
 </head>
 <body>
-<div class="rain"></div>
-<div class="container">
-    <div class="current-time" id="currentTime"></div>
-    <h1>Weekly Schedule</h1>
-    <div id="schedule-container"></div>
-</div>
+    <div class="rain"></div>
+    <div class="container">
+        <div class="current-time" id="currentTime"></div>
+        <h1>Weekly Schedule</h1>
+        <div id="schedule-container"></div>
+    </div>
 
-<script>
-    const schedule = {
-        Monday: [
-            { time: '12:00-12:50', subject: 'Advanced Programming 2', room: 'C1.3.362', lecturer: 'Aruzhan Ali' },
-            { time: '13:05-13:55', subject: 'Probability and Statistics', room: 'C1.1.346P', lecturer: 'Zharkynbay Bakhyt' },
-            { time: '14:00-14:50', subject: 'Probability and Statistics', room: 'C1.1.346P', lecturer: 'Zharkynbay Bakhyt' }
-        ],
-        Tuesday: [
-            { time: '13:05-13:55', subject: 'Academic Writing', room: 'C1.1.228P', lecturer: 'Zhenisbaeva Meruert' }
-        ],
-        Wednesday: [
-            { time: '13:05-13:55', subject: 'Probability and Statistics', room: 'C1.1.142', lecturer: 'Zharkynbay Bakhyt' },
-            { time: '14:00-14:50', subject: 'Probability and Statistics', room: 'C1.1.142', lecturer: 'Zharkynbay Bakhyt' }
-        ],
-        Thursday: [
-            { time: '13:05-13:55', subject: 'Advanced Programming 2', room: 'C1.1.354K', lecturer: 'Aruzhan Ali' },
-            { time: '14:00-14:50', subject: 'Advanced Programming 2', room: 'C1.1.354K', lecturer: 'Aruzhan Ali' },
-            { time: '15:00-15:50', subject: 'Academic Writing', room: 'C1.1.253P', lecturer: 'Zhenisbaeva Meruert' },
-            { time: '16:00-16:50', subject: 'Academic Writing', room: 'C1.1.253P', lecturer: 'Zhenisbaeva Meruert' }
-        ],
-        Friday: [
-            { time: '13:05-13:55', subject: 'Advanced Operating Systems', room: 'C1.2.239K', lecturer: 'Seilkhanova Kymbat' },
-            { time: '14:00-14:50', subject: 'Advanced Operating Systems', room: 'C1.2.239K', lecturer: 'Seilkhanova Kymbat' },
-            { time: '17:00-17:50', subject: 'Introduction to Game Development', room: 'C1.1.244K', lecturer: 'Kamila Zhakupova' },
-            { time: '18:00-18:50', subject: 'Introduction to Game Development', room: 'C1.1.244K', lecturer: 'Kamila Zhakupova' }
-        ]
-    };
+    <script>
+        const schedule = {
+            Monday: [
+                { time: '12:00-12:50', subject: 'Advanced Programming 2', room: 'C1.3.362', lecturer: 'Aruzhan Ali' },
+                { time: '13:05-13:55', subject: 'Probability and Statistics', room: 'C1.1.346P', lecturer: 'Zharkynbay Bakhyt' },
+                { time: '14:00-14:50', subject: 'Probability and Statistics', room: 'C1.1.346P', lecturer: 'Zharkynbay Bakhyt' }
+            ],
+            Tuesday: [
+                { time: '13:05-13:55', subject: 'Academic Writing', room: 'C1.1.228P', lecturer: 'Zhenisbaeva Meruert' }
+            ],
+            Wednesday: [
+                { time: '13:05-13:55', subject: 'Probability and Statistics', room: 'C1.1.142', lecturer: 'Zharkynbay Bakhyt' },
+                { time: '14:00-14:50', subject: 'Probability and Statistics', room: 'C1.1.142', lecturer: 'Zharkynbay Bakhyt' }
+            ],
+            Thursday: [
+                { time: '13:05-13:55', subject: 'Advanced Programming 2', room: 'C1.1.354K', lecturer: 'Aruzhan Ali' },
+                { time: '14:00-14:50', subject: 'Advanced Programming 2', room: 'C1.1.354K', lecturer: 'Aruzhan Ali' },
+                { time: '15:00-15:50', subject: 'Academic Writing', room: 'C1.1.253P', lecturer: 'Zhenisbaeva Meruert' },
+                { time: '16:00-16:50', subject: 'Academic Writing', room: 'C1.1.253P', lecturer: 'Zhenisbaeva Meruert' }
+            ],
+            Friday: [
+                { time: '13:05-13:55', subject: 'Advanced Operating Systems', room: 'C1.2.239K', lecturer: 'Seilkhanova Kymbat' },
+                { time: '14:00-14:50', subject: 'Advanced Operating Systems', room: 'C1.2.239K', lecturer: 'Seilkhanova Kymbat' },
+                { time: '17:00-17:50', subject: 'Introduction to Game Development', room: 'C1.1.244K', lecturer: 'Kamila Zhakupova' },
+                { time: '18:00-18:50', subject: 'Introduction to Game Development', room: 'C1.1.244K', lecturer: 'Kamila Zhakupova' }
+            ]
+        };
 
-    function createRain() {
-        const rain = document.querySelector('.rain');
-        const dropCount = 100;
+        function createRain() {
+            const rain = document.querySelector('.rain');
+            const dropCount = 100;
 
-        for(let i = 0; i < dropCount; i++) {
-            const drop = document.createElement('span');
-            drop.style.left = Math.random() * 100 + '%';
-            drop.style.animationDelay = Math.random() * 2 + 's';
-            drop.style.animationDuration = Math.random() * 1 + 0.5 + 's';
-            rain.appendChild(drop);
+            for(let i = 0; i < dropCount; i++) {
+                const drop = document.createElement('span');
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                drop.style.animationDuration = Math.random() * 1 + 0.5 + 's';
+                rain.appendChild(drop);
+            }
         }
-    }
 
-    function getCurrentTimeStatus(timeString) {
-        const [startTime, endTime] = timeString.split('-');
-        const now = new Date();
-        const currentTime = now.getHours() * 60 + now.getMinutes();
+        function getCurrentTimeStatus(timeString) {
+            const [startTime, endTime] = timeString.split('-');
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
 
-        const [startHour, startMinute] = startTime.split(':').map(Number);
-        const [endHour, endMinute] = endTime.split(':').map(Number);
+            const [startHour, startMinute] = startTime.split(':').map(Number);
+            const [endHour, endMinute] = endTime.split(':').map(Number);
 
-        const classStartTime = startHour * 60 + startMinute;
-        const classEndTime = endHour * 60 + endMinute;
+            const classStartTime = startHour * 60 + startMinute;
+            const classEndTime = endHour * 60 + endMinute;
 
-        if (currentTime >= classStartTime && currentTime <= classEndTime) {
-            return 'current';
-        } else if (currentTime > classEndTime) {
-            return 'completed';
+            if (currentTime >= classStartTime && currentTime <= classEndTime) {
+                return 'current';
+            } else if (currentTime > classEndTime) {
+                return 'completed';
+            }
+            return 'upcoming';
         }
-        return 'upcoming';
-    }
 
-    function updateSchedule() {
-        const container = document.getElementById('schedule-container');
-        const currentDate = new Date();
-        const currentDay = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+        function updateSchedule() {
+            const container = document.getElementById('schedule-container');
+            const currentDate = new Date();
+            const currentDay = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
 
-        container.innerHTML = '';
+            container.innerHTML = '';
 
-        for (const [day, classes] of Object.entries(schedule)) {
-            const dayPanel = document.createElement('div');
-            dayPanel.className = `day-panel ${day === currentDay ? 'current-day' : ''}`;
+            for (const [day, classes] of Object.entries(schedule)) {
+                const dayPanel = document.createElement('div');
+                dayPanel.className = `day-panel ${day === currentDay ? 'current-day' : ''}`;
 
-            const dayHeader = `
+                const dayHeader = `
                     <div class="day-header">
                         <span class="day-name">
                             <i class='bx bx-calendar'></i>
@@ -297,51 +305,52 @@
                     </div>
                 `;
 
-            const classesHTML = classes.map(classItem => {
-                const status = day === currentDay ? getCurrentTimeStatus(classItem.time) : '';
-                return `
+                const classesHTML = classes.map(classItem => {
+                    const status = day === currentDay ? getCurrentTimeStatus(classItem.time) : '';
+                    return `
                         <div class="class-item ${status}">
                             <div class="status-icon">
                                 ${status === 'completed' ? '<i class="bx bx-check"></i>' :
-                    status === 'current' ? '<i class="bx bx-play"></i>' :
-                        '<i class="bx bx-time"></i>'}
+                                  status === 'current' ? '<i class="bx bx-play"></i>' :
+                                  '<i class="bx bx-time"></i>'}
                             </div>
-                            <div class="time">${classItem.time}</div>
-                            <div class="subject">${classItem.subject}</div>
-                            <div class="room">${classItem.room}</div>
-                            <div class="lecturer">${classItem.lecturer}</div>
+                            <div class="details">
+                                <div class="time">${classItem.time}</div>
+                                <div class="subject">${classItem.subject}</div>
+                                <div class="room">${classItem.room}</div>
+                                <div class="lecturer">${classItem.lecturer}</div>
+                            </div>
                         </div>
                     `;
-            }).join('');
+                }).join('');
 
-            dayPanel.innerHTML = dayHeader + classesHTML;
-            container.appendChild(dayPanel);
+                dayPanel.innerHTML = dayHeader + classesHTML;
+                container.appendChild(dayPanel);
+            }
         }
-    }
 
-    function updateCurrentTime() {
-        const timeElement = document.getElementById('currentTime');
-        const now = new Date();
-        timeElement.textContent = now.toLocaleTimeString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
-    }
+        function updateCurrentTime() {
+            const timeElement = document.getElementById('currentTime');
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
 
-    createRain();
-    updateSchedule();
-    updateCurrentTime();
+        createRain();
+        updateSchedule();
+        updateCurrentTime();
 
-    // Update time every second
-    setInterval(updateCurrentTime, 1000);
-    // Update schedule every minute
-    setInterval(updateSchedule, 60000);
-
-</script>
+        // Update time every second
+        setInterval(updateCurrentTime, 1000);
+        // Update schedule every minute
+        setInterval(updateSchedule, 60000);
+    </script>
 </body>
 </html>
